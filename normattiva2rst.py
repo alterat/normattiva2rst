@@ -105,19 +105,19 @@ isLetter = 0
 isNumber = 0
 isIntro = 1
 for line in new_ctxt:
-    if line[0:4]=="Capo":
+    if line.startswith("Capo"):
         isLetter = 0
         isNumber = 0
         isCapo = 1
         capoTitle = line + "."
-    elif (line[0:4]=="Sezi") | (line[0:4]=="SEZI"):
+    elif (line.startswith("Sezione ")) | (line.startswith("SEZIONE ")):
         isLetter = 0
         isNumber = 0
         isSezi=1
         isCapo = 0
         isArt = 0
         seziTitle = line + "."
-    elif line[0:4]=="Art.":
+    elif line.startswith("Art. "):
         isLetter = 0
         isNumber = 0
         isArt=1
