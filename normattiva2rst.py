@@ -80,9 +80,9 @@ with open(filename, 'r') as f:
 
 ctxt = [line.strip().replace(" "*5, " ").replace(" "*4, " ").replace(" "*3, " ").replace(" "*2, " ") for line in text]
 # replace "((...))" with nothing
-ctxt = [line.replace("((...))","") for line in ctxt]
+ctxt = [line.replace("(( ... ))","").replace("((...))","") for line in ctxt]
 # replace "((" "))" with nothing
-ctxt = [line.replace("((","").replace("))","") for line in ctxt]
+ctxt = [line.replace("(( ","").replace(" ))","").replace("((","").replace("))","") for line in ctxt]
 # replace line with nothing
 ctxt = [removeDash(line) for line in ctxt]
 
