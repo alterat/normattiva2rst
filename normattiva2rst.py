@@ -79,10 +79,26 @@ with open(filename, 'r') as f:
     text = f.read().split('\n')
 
 ctxt = [line.strip().replace(" "*5, " ").replace(" "*4, " ").replace(" "*3, " ").replace(" "*2, " ") for line in text]
+
+# remove beginning and end of text
+startLine = next((l for l in ctxt if l.startswith("Vigente al:")), -1)
+if startLine!=-1:
+    startInd = ctxt.index(startLine)
+    ctxt = ctxt[startInd+1:]
+
+endLine = next((l for l in ctxt if l.startswith("TABELLA DI")), -1)
+if endLine==-1:
+    endLine = next((l for l in ctxt if l.startswith("Il presente decreto,")), -1)
+if endLine!=-1:
+    endInd = ctxt.index(endLine)
+    ctxt = ctxt[:endInd]
+
+
 # replace "((...))" with nothing
 ctxt = [line.replace("(( ... ))","").replace("((...))","") for line in ctxt]
 # replace "((" "))" with nothing
 ctxt = [line.replace("(( ","").replace(" ))","").replace("((","").replace("))","") for line in ctxt]
+ctxt = [line.replace(" . . .","") for line in ctxt]
 # replace line with nothing
 ctxt = [removeDash(line) for line in ctxt]
 
@@ -92,7 +108,7 @@ ctxt = [subsAccent(line) for line in ctxt]
 new_ctxt = []
 
 for (line, ind) in zip(ctxt, range(len(ctxt))):
-    if ((line[:4]=="Capo") | (line[:4]=="Sezi") | (line[:4]=="Art.")) & (ctxt[ind-1]!=""):
+    if ((line[:4]=="Capo") | (line[:4]=="SEZI")| (line[:4]=="Sezi") | (line[:4]=="Art.")) & (ctxt[ind-1]!=""):
         new_ctxt.append("")
     new_ctxt.append(line)
 
@@ -116,7 +132,7 @@ for line in new_ctxt:
         isSezi=1
         isCapo = 0
         isArt = 0
-        seziTitle = line + "."
+        seziTitle = "Sezione" + line[7:] + "."
     elif line.startswith("Art. "):
         isLetter = 0
         isNumber = 0
